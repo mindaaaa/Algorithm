@@ -20,15 +20,24 @@ function solution(nums) {
     combination.reduce((acc, curr) => acc + curr, 0)
   );
 
-  function isPrime(number) {
-    for (let i = 2; i <= Math.sqrt(number); i++) {
-      if (number % i === 0) return false;
+  function eratosthenesPrime() {
+    const MAX = 3000;
+    const isPrime = new Array(MAX + 1).fill(true);
+    isPrime[0] = isPrime[1] = false;
+
+    for (let i = 2; i * i <= MAX; i++) {
+      if (isPrime[i]) {
+        for (let j = i * i; j <= MAX; j += i) {
+          isPrime[j] = false;
+        }
+      }
     }
-    return true;
+
+    return isPrime;
   }
 
   summedCombinations.forEach((number) => {
-    if (isPrime(number)) primeCount++;
+    if (eratosthenesPrime()[number]) primeCount++;
   });
 
   return primeCount;
