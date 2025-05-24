@@ -1,64 +1,65 @@
 function solution(numbers, hand) {
-  const keypad = new Map();
-  keypad.set(1, [0, 0]);
-  keypad.set(2, [0, 1]);
-  keypad.set(3, [0, 2]);
-  keypad.set(4, [1, 0]);
-  keypad.set(5, [1, 1]);
-  keypad.set(6, [1, 2]);
-  keypad.set(7, [2, 0]);
-  keypad.set(8, [2, 1]);
-  keypad.set(9, [2, 2]);
-  keypad.set('*', [3, 0]);
-  keypad.set(0, [3, 1]);
-  keypad.set('#', [3, 2]);
+  const keypad = {
+    1: [0, 0],
+    2: [0, 1],
+    3: [0, 2],
+    4: [1, 0],
+    5: [1, 1],
+    6: [1, 2],
+    7: [2, 0],
+    8: [2, 1],
+    9: [2, 2],
+    '*': [3, 0],
+    0: [3, 1],
+    '#': [3, 2],
+  };
 
-  const leftRegex = /[147]/;
-  const rightRegex = /[369]/;
+  const leftKeys = [1, 4, 7];
+  const rightKeys = [3, 6, 9];
 
-  let leftHand = keypad.get('*');
-  let rightHand = keypad.get('#');
+  let leftHand = keypad['*'];
+  let rightHand = keypad['#'];
 
   let leftDistance = 0;
   let rightDistance = 0;
-  let keySelect;
+  let target;
+
+  function getDistance(a, b) {
+    return Math.abs(a[0] - b[0]) + Math.abs(a[1] - b[1]);
+  }
 
   return numbers
     .map((number) => {
-      if (leftRegex.test(number)) {
-        leftHand = keypad.get(number);
+      if (leftKeys.includes(number)) {
+        leftHand = keypad[number];
         return 'L';
       }
 
-      if (rightRegex.test(number)) {
-        rightHand = keypad.get(number);
+      if (rightKeys.includes(number)) {
+        rightHand = keypad[number];
         return 'R';
       }
 
-      keySelect = keypad.get(number);
-      leftDistance =
-        Math.abs(leftHand[0] - keySelect[0]) +
-        Math.abs(leftHand[1] - keySelect[1]);
-      let rightDistance =
-        Math.abs(rightHand[0] - keySelect[0]) +
-        Math.abs(rightHand[1] - keySelect[1]);
+      target = keypad[number];
+      leftDistance = getDistance(leftHand, target);
+      rightDistance = getDistance(rightHand, target);
 
       if (leftDistance > rightDistance) {
-        rightHand = keypad.get(number);
+        rightHand = keypad[number];
         return 'R';
       }
 
       if (rightDistance > leftDistance) {
-        leftHand = keypad.get(number);
+        leftHand = keypad[number];
         return 'L';
       }
 
       if (leftDistance === rightDistance) {
         if (hand === 'right') {
-          rightHand = keypad.get(number);
+          rightHand = keypad[number];
           return 'R';
         }
-        leftHand = keypad.get(number);
+        leftHand = keypad[number];
         return 'L';
       }
     })
