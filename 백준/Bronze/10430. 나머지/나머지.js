@@ -1,0 +1,8 @@
+const fs = require('fs');
+const input = fs.readFileSync('/dev/stdin').toString().trim().split(' ');
+
+const [a, b, c] = input.map(Number);
+console.log(`${(a+b)%c}
+${((a%c)+(b%c))%c}
+${(a*b)%c}
+${((a%c)*(b%c))%c}`);
