@@ -1,18 +1,19 @@
 function solution(arr1, arr2) {
-  let answer = Array.from({ length: arr1.length }, () =>
-    Array(arr2[0].length).fill(0)
-  );
-
-  for (let i = 0; i < arr1.length; i++) {
-    for (let j = 0; j < arr2[0].length; j++) {
-      let sum = 0;
-      for (let k = 0; k < arr1[0].length; k++) {
-        sum += arr1[i][k] * arr2[k][j];
-      }
-
-      answer[i][j] = sum;
+    const r1 = arr1.length; // 행
+    const c1 = arr1[0].length; // 공통축
+    const c2 = arr2[0].length;
+    
+    const answer = Array.from({length: r1}, () => Array(c2).fill(0));
+    
+    for(let i = 0; i < r1; i++){
+        for(let k = 0; k < c1; k++){
+            let val = arr1[i][k];
+            
+            for(let j = 0; j < c2; j++){
+                answer[i][j] += val * arr2[k][j]
+            }
+        }
     }
-  }
-
-  return answer;
+    
+    return answer;
 }
