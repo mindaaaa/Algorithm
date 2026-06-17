@@ -1,25 +1,20 @@
 function solution(n, computers) {
-  let visited = Array(n).fill(false);
-  let count = 0;
-
-  // 네트워크가 몇 개인가?
-  for (let i = 0; i < n; i++) {
-    if (!visited[i]) {
-      dfs(i);
-      count++;
+    let count = 0;
+    const visited = Array.from({length: n}, () => false);
+    
+    const dfs = (idx) => {
+        if(visited[idx]) return;
+        visited[idx] = true;
+        
+        for(let i = 0; i < n; i++){
+            if(computers[idx][i] === 1) dfs(i);
+        }
     }
-  }
-
-  // 어디까지 연결되어있나?
-  function dfs(computer) {
-    visited[computer] = true;
-
-    for (let i = 0; i < n; i++) {
-      if (computers[computer][i] && !visited[i]) {
+    
+    for(let i = 0; i < n; i++){
+        if(!visited[i]) count += 1;
         dfs(i);
-      }
     }
-  }
-
-  return count;
+    
+    return count;
 }
