@@ -1,19 +1,24 @@
 function solution(n, lost, reserve) {
-  let realLost = lost.filter((student) => !reserve.includes(student));
-  let realReserve = reserve.filter((student) => !lost.includes(student));
-
-  realLost.sort((a, b) => a - b);
-  realReserve.sort((a, b) => a - b);
-
-  for (let lostStudent of realLost) {
-    const idx = realReserve.findIndex(
-      (student) => Math.abs(student - lostStudent) === 1
-    );
-    if (idx !== -1) {
-      realReserve.splice(idx, 1);
-      realLost = realLost.filter((student) => student !== lostStudent);
+    let count = n;
+    
+    const lostSet = new Set(lost);
+    const reserveSet = new Set(reserve);
+    
+    for(const s of reserve){
+        if(lostSet.has(s)){
+            lostSet.delete(s);
+            reserveSet.delete(s)
+        }
     }
-  }
-
-  return n - realLost.length;
+        
+    const lostArr = [...lostSet].sort((a, b) => a-b);
+    const reserveArr = [...reserveSet].sort((a, b) => a-b);
+    
+    for(const s of lostArr){
+        if(reserveSet.has(s - 1)) reserveSet.delete(s-1)
+        else if(reserveSet.has(s+1)) reserveSet.delete(s+1)
+        else count--;
+    }
+    
+    return count;
 }
